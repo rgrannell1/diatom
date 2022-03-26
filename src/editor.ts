@@ -1,6 +1,5 @@
 import { Config } from "./config.ts";
 
-
 /**
  * Open a file in a chosen editor
  *
@@ -10,7 +9,7 @@ import { Config } from "./config.ts";
  */
 export async function open(config: Config, fpath: string) {
   const proc = Deno.run({
-    cmd: [config.visualEditor, '--goto', `${fpath}:${config.cursorStart}`],
+    cmd: [config.visualEditor, "--goto", `${fpath}:${config.cursorStart}`],
   });
 
   await proc.status();

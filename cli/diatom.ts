@@ -15,9 +15,11 @@ Commands:
 `;
 
 import { main as diatomNew } from "./diatom-new.ts";
+import { main as diatomList } from "./diatom-list.ts";
 
 const commands: Record<string, any> = {
   new: diatomNew,
+  list: diatomList,
 };
 
 const [command] = Deno.args;

@@ -6,9 +6,8 @@ export type Config = {
   editor: string;
   visualEditor: string;
   template: string;
-  cursorStart: string
+  cursorStart: string;
 };
-
 
 /**
  * Read configuration from XDG configuration home

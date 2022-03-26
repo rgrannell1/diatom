@@ -1,7 +1,6 @@
 import * as Config from "./config.ts";
 import { renderFile } from "https://deno.land/x/mustache/mod.ts";
 
-
 /**
  * Render a template
  *
