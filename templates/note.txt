@@ -1,0 +1,10 @@
+---
+- id: $filepath
+  created-on: "{{ date }}"
+  describes:
+  - {{ name }}
+
+- id: {{ name }}
+---
+# {{ name }}
+
