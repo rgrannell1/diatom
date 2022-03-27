@@ -9,7 +9,8 @@ export type State = {
 };
 
 /**
- * Represents a Vault containing all markdown notes
+ * Represents a Vault containing all markdown notes,
+ * and how to access information from it
  *
  * @export
  * @class Vault
@@ -140,6 +141,7 @@ export class Frontmatter {
   }
 
   *entities() {
+    // just read the yaml, and substitute
   }
 }
 
@@ -161,5 +163,6 @@ export class MarkdownBody {
   }
 
   *entities() {
+    // read the markdown
   }
 }

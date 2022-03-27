@@ -35,7 +35,7 @@ export async function newFile(argv: string[]) {
     await Deno.writeFile(fpath, new TextEncoder().encode(content));
   }
 
-  await Editor.open(config, fpath);
+  await Editor.openNote(config, fpath);
 }
 
 export const DIATOM_NEW_CLI = `

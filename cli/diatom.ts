@@ -17,9 +17,11 @@ Commands:
 
 import { main as diatomNew } from "./diatom-new.ts";
 import { main as diatomList } from "./diatom-list.ts";
+import { main as diatomOpen } from "./diatom-open.ts";
 
 const commands: Record<string, any> = {
   new: diatomNew,
+  open: diatomOpen,
   list: diatomList
 };
 
