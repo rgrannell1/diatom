@@ -9,7 +9,7 @@ import { Config } from "./config.ts";
  */
 export async function open(config: Config, fpath: string) {
   const proc = Deno.run({
-    cmd: [config.visualEditor, "--goto", `${fpath}:${config.cursorStart}`],
+    cmd: [config.visualEditor, "--goto", `${fpath}:8:7`],
   });
 
   await proc.status();

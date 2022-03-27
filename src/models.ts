@@ -1,6 +1,14 @@
 import { Config } from "./config.ts";
 import { expandGlob } from "https://deno.land/std/fs/mod.ts";
 
+
+
+/**
+ * Represents a Vault containing all markdown notes
+ *
+ * @export
+ * @class Vault
+ */
 export class Vault {
   config: Config;
 
@@ -10,23 +18,31 @@ export class Vault {
 
   async *notes() {
     for await (const file of expandGlob(`${this.config.vault}/**.md`)) {
-      yield file;
+      yield new Note(this, file);
     }
   }
 }
 
-export class Note {
-  fpath: string;
-  dpath: string;
-  content?: string;
 
-  constructor(dpath: string, fpath: string) {
-    this.fpath = fpath;
-    this.dpath = dpath;
+/**
+ * A Markdown note
+ *
+ * @export
+ * @class Note
+ */
+export class Note {
+  vault: Vault
+  fpath: string
+  fname: string
+
+  constructor(vault: Vault, file: any) {
+    this.vault = vault
+    this.fpath = file.path
+    this.fname = file.name
   }
 
   async init() {
-    this.content = await Deno.readTextFile(this.fpath);
+    //this.content = await Deno.readTextFile(this.fpath);
   }
 
   hash(): string {

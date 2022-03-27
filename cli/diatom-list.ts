@@ -4,13 +4,19 @@
 import * as Models from "../src/models.ts";
 import * as Config from "../src/config.ts";
 
+import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
+
+
 export const DIATOM_LIST_FILES_CLI = `
 Usage:
-  diatom list files
+  diatom list files [--count]
   diatom (-h|--help)
 
 Description:
   List files
+
+Options:
+  --count    Count the number of matches
 `;
 
 export async function listFiles(argv: string[]) {
@@ -21,8 +27,18 @@ export async function listFiles(argv: string[]) {
   if (args.files) {
     const vault = new Models.Vault(config);
 
+    if (args['--count']) {
+      let counter = 0;
+
+      for await (const file of vault.notes()) {
+        counter++
+      }
+
+      console.log(counter)
+      return
+    }
     for await (const file of vault.notes()) {
-      console.log(file.path);
+      console.log(file.fpath);
     }
   }
 }
@@ -37,9 +53,10 @@ Description:
 
 Commands:
   list files    create a file
-`;
 
-import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
+Options:
+  --count    Count the number of matches
+`;
 
 export async function main(argv: string[]) {
   const args = docopt(DIATOM_LIST_CLI, { argv, allowExtra: true });

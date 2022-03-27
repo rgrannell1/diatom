@@ -5,6 +5,7 @@
   - {{ name }}
 
 - id: {{ name }}
+  is:
 ---
 # {{ name }}
 
