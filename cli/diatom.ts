@@ -10,8 +10,9 @@ Description:
   Diatom
 
 Commands:
-  new
-  export             Export things from diatom
+  list       List diatom files
+  new        Construct new files
+  export     Export things from diatom
 `;
 
 import { main as diatomNew } from "./diatom-new.ts";
@@ -19,7 +20,7 @@ import { main as diatomList } from "./diatom-list.ts";
 
 const commands: Record<string, any> = {
   new: diatomNew,
-  list: diatomList,
+  list: diatomList
 };
 
 const [command] = Deno.args;
