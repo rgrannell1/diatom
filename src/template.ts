@@ -11,5 +11,5 @@ import { renderFile } from "https://deno.land/x/mustache/mod.ts";
 export async function file(model: Record<string, string>) {
   const config = await Config.read();
 
-  return renderFile(config.template, model);
+  return renderFile(config.templates.note, model);
 }

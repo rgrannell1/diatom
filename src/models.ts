@@ -42,7 +42,8 @@ export class Vault {
 
   /**
    * Scan for cursory changes in the vault
-   *   since the previous scan.
+   *   since the previous scan. Return a list of updated paths that can be selectively
+   *   updated, for performance
    *
    * @param {Record<string, string>} state
    *
@@ -164,5 +165,8 @@ export class MarkdownBody {
 
   *entities() {
     // read the markdown
+    // hashes
+    // file-size
+    // wordcount
   }
 }

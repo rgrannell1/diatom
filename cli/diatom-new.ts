@@ -9,7 +9,7 @@ import { exists } from "https://deno.land/std/fs/mod.ts";
 
 export const DIATOM_NEW_FILE_CLI = `
 Usage:
-  diatom new file (<name>)
+  diatom new file (<name>...)
   diatom (-h|--help)
 
 Description:
@@ -21,21 +21,25 @@ export async function newFile(argv: string[]) {
   const args = docopt(DIATOM_NEW_FILE_CLI, { argv, allowExtra: true });
 
   const config = await Config.read();
-  const name = args["<name>"];
-  const fname = name.endsWith(".md") ? name : `${name}.md`;
 
-  const fpath = join(config.vault, fname);
-  const content = await Template.file({
-    name: name.replace(/\.md$/, ""),
-    date: (new Date()).toLocaleDateString("en-CA"),
-  });
+  const names = args["<name>"];
 
-  const pathExists = await exists(fpath);
-  if (!pathExists) {
-    await Deno.writeFile(fpath, new TextEncoder().encode(content));
+  for (const name of names) {
+    const fname = name.endsWith(".md") ? name : `${name}.md`;
+
+    const fpath = join(config.vault, fname);
+    const content = await Template.file({
+      name: name.replace(/\.md$/, ""),
+      date: (new Date()).toLocaleDateString("en-CA"),
+    });
+
+    const pathExists = await exists(fpath);
+    if (!pathExists) {
+      await Deno.writeFile(fpath, new TextEncoder().encode(content));
+    }
+
+    await Editor.openNote(config, fpath);
   }
-
-  await Editor.openNote(config, fpath);
 }
 
 export const DIATOM_NEW_CLI = `
