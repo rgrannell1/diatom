@@ -7,7 +7,11 @@ Usage:
   diatom (-h|--help)
 
 Description:
-  Diatom
+  Diatom bridges your markdown notes with an Axon database. It:
+
+  - Exports note information to Axon
+  - Lists or counts notes
+  - Creates new notes from a template file
 
 Commands:
   list       List diatom files
