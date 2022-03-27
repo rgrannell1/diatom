@@ -31,8 +31,8 @@ export async function main(argv: string[]) {
 
   if (args.file) {
     if (!name) {
-      console.error(`diatom open: filename not given`)
-      Deno.exit(1)
+      console.error(`diatom open: filename not given`);
+      Deno.exit(1);
     }
 
     const fname = name.endsWith(".md") ? name : `${name}.md`;
@@ -41,8 +41,8 @@ export async function main(argv: string[]) {
 
     const pathExists = await exists(fpath);
     if (!pathExists) {
-      console.error(`diatom open: ${fpath} does not exist`)
-      Deno.exit(1)
+      console.error(`diatom open: ${fpath} does not exist`);
+      Deno.exit(1);
     }
 
     return Editor.openNote(config, fpath);
@@ -53,7 +53,7 @@ export async function main(argv: string[]) {
   }
 
   if (!name) {
-    config.vault
+    config.vault;
     return Editor.openVault(config);
   }
 }

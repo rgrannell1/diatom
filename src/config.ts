@@ -1,7 +1,7 @@
 import * as Constants from "./constants.ts";
 import { parse as yamlParse } from "https://deno.land/std@0.82.0/encoding/yaml.ts";
 
-export type Config = any
+export type Config = any;
 
 /**
  * Read configuration from XDG configuration home

@@ -22,7 +22,7 @@ import { main as diatomOpen } from "./diatom-open.ts";
 const commands: Record<string, any> = {
   new: diatomNew,
   open: diatomOpen,
-  list: diatomList
+  list: diatomList,
 };
 
 const [command] = Deno.args;

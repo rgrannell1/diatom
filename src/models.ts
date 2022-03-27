@@ -1,6 +1,8 @@
 import { Config } from "./config.ts";
 import { expandGlob } from "https://deno.land/std/fs/mod.ts";
+
 import * as Axon from "https://raw.githubusercontent.com/rgrannell1/axon/main/mod.ts";
+import * as Parsers from "./parser.ts";
 
 export type State = {
   pathHashes: Record<string, string>;
@@ -31,11 +33,11 @@ export class Vault {
   async *things(state: State) {
     for await (const note of this.notes()) {
       if (!state.updated.includes(note.fpath)) {
-        continue
+        continue;
       }
 
       for await (const thing of note.things()) {
-        yield thing
+        yield thing;
       }
     }
   }
@@ -96,6 +98,19 @@ export class Note {
     this.fname = file.name;
   }
 
+  async read(cache = false): Promise<string> {
+    if (this.content) {
+      return this.content;
+    }
+
+    const content = (await Deno.readTextFile(this.fpath)).toString();
+    if (cache) {
+      this.content = content;
+    }
+
+    return content;
+  }
+
   /**
    * Hash this file (read and cache if needed)
    *
@@ -104,23 +119,14 @@ export class Note {
    * @memberof Note
    */
   async hash(cache = false): Promise<string> {
-    if (this.content) {
-      return Axon.id(this.content);
-    }
-
-    var content = (await Deno.readFile(this.fpath)).toString();
-
-    if (cache) {
-      this.content = content.toString();
-    }
-
-    return Axon.id(content).toString();
+    return Axon.id(await this.read(cache));
   }
 
-  *things() {
-    // parse frontmatter, body
-    // yield that stuff
-    // yiled metadata too
+  async *things() {
+    const parser = new Parsers.NoteParser(this);
+
+    for await (const thing of parser.things()) {
+    }
   }
 }
 

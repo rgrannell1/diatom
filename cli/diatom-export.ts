@@ -17,7 +17,7 @@ import * as Models from "../src/models.ts";
 
 async function* readVault(vault: Models.Vault, state: Models.State) {
   for await (const thing of vault.things(state)) {
-    yield thing
+    yield thing;
   }
 }
 

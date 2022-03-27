@@ -9,7 +9,7 @@ import { Config } from "./config.ts";
  */
 export async function openNote(config: Config, fpath: string) {
   const proc = Deno.run({
-    cmd: ['code', "--goto", `${fpath}:8:7`],
+    cmd: ["code", "--goto", `${fpath}:8:7`],
   });
 
   await proc.status();
@@ -17,7 +17,7 @@ export async function openNote(config: Config, fpath: string) {
 
 export async function openVault(config: Config) {
   const proc = Deno.run({
-    cmd: ['code', '-n', config.vault],
+    cmd: ["code", "-n", config.vault],
   });
 
   await proc.status();
