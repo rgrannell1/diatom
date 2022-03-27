@@ -126,6 +126,7 @@ export class Note {
     const parser = new Parsers.NoteParser(this);
 
     for await (const thing of parser.things()) {
+      yield thing;
     }
   }
 }
