@@ -376,7 +376,7 @@ export class NoteParser {
         obj[key] = tidied;
       }
 
-      return obj
+      return obj;
     };
 
     const file = {
@@ -401,7 +401,6 @@ export class NoteParser {
           file.references.push(tgt as string);
         }
       }
-
     }
 
     yield file;

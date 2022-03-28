@@ -1,14 +1,15 @@
-#! /usr/bin/env bash
+#! /usr/bin/env zsh
+
 
 # create dist
 rm -rf dist || echo 'dist/ not present, creating...'
 mkdir dist
 
 # bundle to tmpfiles
-deno bundle cli/diatom-export.ts dist/diatom-export.tmp
-deno bundle cli/diatom-open.ts   dist/diatom-open.tmp
-deno bundle cli/diatom-list.ts   dist/diatom-list.tmp
-deno bundle cli/diatom.ts        dist/diatom.tmp
+/home/rg/.deno/bin/deno bundle cli/diatom-export.ts dist/diatom-export.tmp
+/home/rg/.deno/bin/deno bundle cli/diatom-open.ts   dist/diatom-open.tmp
+/home/rg/.deno/bin/deno bundle cli/diatom-list.ts   dist/diatom-list.tmp
+/home/rg/.deno/bin/deno bundle cli/diatom.ts        dist/diatom.tmp
 
 # create shebangs
 echo '#!/bin/sh'                                                 | tee -a dist/shebang.tmp

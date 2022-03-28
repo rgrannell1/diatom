@@ -4,6 +4,9 @@ import { expandGlob } from "https://deno.land/std/fs/mod.ts";
 import * as Axon from "https://raw.githubusercontent.com/rgrannell1/axon/main/mod.ts";
 import * as Parsers from "./parser.ts";
 
+/*
+ * Vault state returned to Axon
+ */
 export type State = {
   pathHashes: Record<string, string>;
   cacheKey: string;
@@ -30,6 +33,9 @@ export class Vault {
     }
   }
 
+  /*
+   * Enumerate all updated notes, and print the things in the note
+   */
   async *things(state: State) {
     for await (const note of this.notes()) {
       if (!state.updated.includes(note.fpath)) {
@@ -98,6 +104,14 @@ export class Note {
     this.fname = file.name;
   }
 
+  /**
+   * Read (and possibly cache) file content
+   *
+   * @param {boolean} [cache=false]
+   * @return {*}  {Promise<string>}
+   *
+   * @memberof Note
+   */
   async read(cache = false): Promise<string> {
     if (this.content) {
       return this.content;
@@ -128,52 +142,5 @@ export class Note {
     for await (const thing of parser.things()) {
       yield thing;
     }
-  }
-}
-
-/**
- * Extract triples from note frontmatter
- *
- * @export
- * @class Frontmatter
- */
-export class Frontmatter {
-  fpath: string;
-  dpath: string;
-  content: string;
-
-  constructor(dpath: string, fpath: string, content: string) {
-    this.fpath = fpath;
-    this.dpath = dpath;
-    this.content = content;
-  }
-
-  *entities() {
-    // just read the yaml, and substitute
-  }
-}
-
-/**
- * Extract triples from the markdown body
- *
- * @export
- * @class MarkdownBody
- */
-export class MarkdownBody {
-  fpath: string;
-  dpath: string;
-  content: string;
-
-  constructor(dpath: string, fpath: string, content: string) {
-    this.fpath = fpath;
-    this.dpath = dpath;
-    this.content = content;
-  }
-
-  *entities() {
-    // read the markdown
-    // hashes
-    // file-size
-    // wordcount
   }
 }

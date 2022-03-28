@@ -21,8 +21,7 @@ export async function newFile(argv: string[]) {
   const args = docopt(DIATOM_NEW_FILE_CLI, { argv, allowExtra: true });
 
   const config = await Config.read();
-
-  const names = args["<name>"];
+  const names = args["<name>"]?.trim();
 
   for (const name of names) {
     const fname = name.endsWith(".md") ? name : `${name}.md`;
