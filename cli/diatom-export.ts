@@ -49,12 +49,12 @@ export async function main() {
     }
 
     console.log(JSON.stringify({
-      id: "Pinboard State",
+      id: "Diatom State",
       is: "Axon/PluginState",
       state: JSON.stringify({ newState }),
     }));
   } else {
-    console.log("diaton: invalid arguments");
+    console.log("diatom: invalid arguments provided");
     console.log(JSON.stringify(Deno.args));
     Deno.exit(1);
   }

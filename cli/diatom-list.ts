@@ -8,7 +8,7 @@ import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
 
 export const DIATOM_LIST_FILES_CLI = `
 Usage:
-  diatom list files [--count]
+  diatom list files [--count] [--name]
   diatom (-h|--help)
 
 Description:
@@ -16,6 +16,7 @@ Description:
 
 Options:
   --count    Count the number of matches
+  --name     Just show the file name, not the full path
 `;
 
 export async function listFiles(argv: string[]) {
@@ -37,7 +38,11 @@ export async function listFiles(argv: string[]) {
       return;
     }
     for await (const file of vault.notes()) {
-      console.log(file.fpath);
+      if (args['--name']) {
+        console.log(file.fname);
+      } else {
+        console.log(file.fpath);
+      }
     }
   }
 }
@@ -55,6 +60,7 @@ Commands:
 
 Options:
   --count    Count the number of matches
+  --name     Just show the file name, not the full path
 `;
 
 export async function main(argv: string[]) {

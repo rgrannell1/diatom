@@ -360,6 +360,7 @@ export class NoteParser {
 
         if (typeof val === "string") {
           tidied = addContext(val);
+          obj[key] = tidied;
         } else if (Array.isArray(val)) {
           for (let bit of val) {
             if (typeof bit === "string") {
@@ -373,7 +374,6 @@ export class NoteParser {
           }
         }
 
-        obj[key] = tidied;
       }
 
       return obj;
@@ -394,6 +394,8 @@ export class NoteParser {
     }
 
     for (const thing of meta) {
+      yield tidy(thing);
+
       for (const [rel, tgt] of Object.entries(tidy(thing) as any)) {
         addContext(rel);
 
@@ -419,6 +421,7 @@ export class NoteParser {
         lexeme.meta as Record<string, any>[],
       )
     ) {
+
       yield thing;
     }
 

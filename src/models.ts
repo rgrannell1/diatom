@@ -22,9 +22,11 @@ export type State = {
  */
 export class Vault {
   config: Config;
+  subsumptions: Axon.Models.Subsumptions
 
   constructor(config: Config) {
     this.config = config;
+    this.subsumptions = new Axon.Models.Subsumptions()
   }
 
   async *notes() {
@@ -43,7 +45,48 @@ export class Vault {
       }
 
       for await (const thing of note.things()) {
+        // add to subsumption tree
+        if (thing.is) {
+          for (const parent of Array.isArray(thing.is) ? thing.is : [thing.is]) {
+            this.subsumptions.add(thing.id, parent)
+          }
+        }
+        if (thing.includes) {
+          for (const child of thing.includes) {
+            this.subsumptions.add(child, thing.id)
+          }
+        }
+
         yield thing;
+      }
+    }
+
+    // todo move the knowledge model
+    const concepts = new Set<string>();
+
+    for (const tgts of Object.values(this.subsumptions.graph)) {
+      for (const tgt of tgts) {
+        concepts.add(tgt)
+      }
+    }
+
+    for (const concept of concepts) {
+      const parents = this.subsumptions.graph[concept]
+
+      if (typeof parents === 'undefined') {
+        yield {
+          id: concept,
+          is: 'Concept',
+          parents: ['Axon_Thing']
+        }
+
+        continue
+      }
+
+      yield {
+        id: concept,
+        is: 'Concept',
+        parent: [...parents]
       }
     }
   }
