@@ -8,6 +8,7 @@ import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
 
 export const DIATOM_LIST_FILES_CLI = `
 Usage:
+  diatom list files [--random] [--name]
   diatom list files [--count] [--name]
   diatom (-h|--help)
 
@@ -16,6 +17,7 @@ Description:
 
 Options:
   --count    Count the number of matches
+  --random   Select a random file
   --name     Just show the file name, not the full path
 `;
 
@@ -37,11 +39,37 @@ export async function listFiles(argv: string[]) {
       console.log(counter);
       return;
     }
+
+    let idx = 0
+    let selection: Models.Note | undefined = undefined;
+
     for await (const file of vault.notes()) {
-      if (args['--name']) {
-        console.log(file.fname);
+      if (args['--random']) {
+
+        // select random from iterator
+        if (Math.floor(Math.random() * idx) === 0) {
+          selection = file;
+        }
+
+        idx++
       } else {
-        console.log(file.fpath);
+        if (args['--name']) {
+          console.log(file.fname);
+        } else {
+          console.log(file.fpath);
+        }
+      }
+    }
+
+    if (args['--random']) {
+      if (!selection) {
+        throw new TypeError(`diatom: no files to choose from.`)
+      }
+
+      if (args['--name']) {
+        console.log(selection.fname);
+      } else {
+        console.log(selection.fpath);
       }
     }
   }
@@ -59,6 +87,7 @@ Commands:
   list files    create a file
 
 Options:
+  --random   Select a random file
   --count    Count the number of matches
   --name     Just show the file name, not the full path
 `;
