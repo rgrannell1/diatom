@@ -9,7 +9,7 @@ import { exists } from "https://deno.land/std/fs/mod.ts";
 
 export const DIATOM_NEW_FILE_CLI = `
 Usage:
-  diatom new file (<name>...)
+  diatom new file [<name>...]
   diatom (-h|--help)
 
 Description:
@@ -17,12 +17,20 @@ Description:
   open it.
 `;
 
+const promptFilename = async () => {
+  return (prompt("> filename:") ?? "").trim();
+};
+
 export async function newFile(argv: string[]) {
   const args = docopt(DIATOM_NEW_FILE_CLI, { argv, allowExtra: true });
 
   const config = await Config.read();
   const names = (args["<name>"] ?? [])
     .map((name: string) => name.trim());
+
+  if (names.length === 0) {
+    names.push(await promptFilename());
+  }
 
   for (const name of names) {
     const fname = name.endsWith(".md") ? name : `${name}.md`;

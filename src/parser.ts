@@ -373,7 +373,6 @@ export class NoteParser {
             }
           }
         }
-
       }
 
       return obj;
@@ -414,14 +413,18 @@ export class NoteParser {
    * @memberof NoteParser
    */
   async *things() {
-    const lexeme = BlockLexer.lex(await this.note.read(false), {});
+    try {
+      var lexeme = BlockLexer.lex(await this.note.read(false), {});
+    } catch (err) {
+      console.error(`diatom: failed to lex ${this.note.fpath}`);
+      throw err;
+    }
 
     for (
       const thing of this.frontmatterThings(
         lexeme.meta as Record<string, any>[],
       )
     ) {
-
       yield thing;
     }
 

@@ -13,6 +13,7 @@ export const DIATOM_OPEN_CLI = `
 Usage:
   diatom open
   diatom open file [<name>]
+  diatom open vault
   diatom open config
   diatom (-h|--help)
 
@@ -36,7 +37,6 @@ export async function main(argv: string[]) {
     }
 
     const fname = name.endsWith(".md") ? name : `${name}.md`;
-
     const fpath = join(config.vault, fname);
 
     const pathExists = await exists(fpath);
@@ -46,6 +46,10 @@ export async function main(argv: string[]) {
     }
 
     return Editor.openNote(config, fpath);
+  }
+
+  if (args.vault) {
+    return Editor.openVault(config)
   }
 
   if (args.config) {

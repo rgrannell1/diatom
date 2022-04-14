@@ -3,22 +3,26 @@
 
 import * as Models from "../src/models.ts";
 import * as Config from "../src/config.ts";
+import * as Editor from "../src/editor.ts";
 
 import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
 
 export const DIATOM_LIST_FILES_CLI = `
 Usage:
-  diatom list files [--random] [--name]
-  diatom list files [--count] [--name]
+  diatom list files [-c|--count] [-n|--name]
+  diatom list files [-c|--count] [-n|--name]
+  diatom list files [-r|--random] [-n|--name]
+  diatom list files [-o|--open] [-r|--random]
   diatom (-h|--help)
 
 Description:
   List files in a diatom markdown vault
 
 Options:
-  --count    Count the number of matches
-  --random   Select a random file
-  --name     Just show the file name, not the full path
+  -o,--open     Open the file using the editor determined by $VISUAL
+  -c,--count    Count the number of matches
+  -r,--random   Select a random file
+  -n,--name     Just show the file name, not the full path
 `;
 
 export async function listFiles(argv: string[]) {
@@ -26,51 +30,53 @@ export async function listFiles(argv: string[]) {
 
   const config = await Config.read();
 
-  if (args.files) {
-    const vault = new Models.Vault(config);
+  if (!args.files) {
+    return;
+  }
 
-    if (args["--count"]) {
-      let counter = 0;
+  const vault = new Models.Vault(config);
 
-      for await (const file of vault.notes()) {
-        counter++;
-      }
-
-      console.log(counter);
-      return;
-    }
-
-    let idx = 0
-    let selection: Models.Note | undefined = undefined;
+  if (args["--count"]) {
+    let counter = 0;
 
     for await (const file of vault.notes()) {
-      if (args['--random']) {
-
-        // select random from iterator
-        if (Math.floor(Math.random() * idx) === 0) {
-          selection = file;
-        }
-
-        idx++
-      } else {
-        if (args['--name']) {
-          console.log(file.fname);
-        } else {
-          console.log(file.fpath);
-        }
-      }
+      counter++;
     }
 
-    if (args['--random']) {
-      if (!selection) {
-        throw new TypeError(`diatom: no files to choose from.`)
+    console.log(counter);
+    return;
+  }
+
+  let idx = 0;
+  let selection: Models.Note | undefined = undefined;
+
+  for await (const file of vault.notes()) {
+    if (args["--random"]) {
+      // select random from iterator
+      if (Math.floor(Math.random() * idx) === 0) {
+        selection = file;
       }
 
-      if (args['--name']) {
-        console.log(selection.fname);
+      idx++;
+    } else {
+      if (args["--name"]) {
+        console.log(file.fname);
       } else {
-        console.log(selection.fpath);
+        console.log(file.fpath);
       }
+    }
+  }
+
+  if (args["--random"]) {
+    if (!selection) {
+      throw new TypeError(`diatom: no files to choose from.`);
+    }
+    if (args["--name"]) {
+      console.log(selection.fname);
+    } else if (args["--open"]) {
+      await Editor.openNote(config, selection.fpath);
+    } else {
+      console.log(selection.fpath);
     }
   }
 }
@@ -87,6 +93,7 @@ Commands:
   list files    create a file
 
 Options:
+  -o,--open     Open the file using the editor determined by $VISUAL
   --random   Select a random file
   --count    Count the number of matches
   --name     Just show the file name, not the full path

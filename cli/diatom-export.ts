@@ -48,11 +48,12 @@ export async function main() {
       console.log(JSON.stringify(thing));
     }
 
-    console.log(JSON.stringify({
-      id: "Diatom State",
-      is: "Axon/PluginState",
-      state: JSON.stringify({ newState }),
-    }));
+    // OOM; use inodes or something more efficient?
+    //    console.log(JSON.stringify({
+    //      id: "Diatom State",
+    //      is: "Axon/PluginState",
+    //      state: JSON.stringify({ newState }),
+    //    }));
   } else {
     console.log("diatom: invalid arguments provided");
     console.log(JSON.stringify(Deno.args));
