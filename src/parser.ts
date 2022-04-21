@@ -393,6 +393,16 @@ export class NoteParser {
     }
 
     for (const thing of meta) {
+      // make it easy to see your own data
+      if (thing.is) {
+        if (Array.isArray(thing.is)) {
+          thing.is.push('Diatom/FrontmatterThing')
+        } else {
+          thing.is = [thing.is, 'Diatom/FrontmatterThing']
+        }
+      } else {
+        thing.is = ['Diatom/FrontmatterThing']
+      }
       yield tidy(thing);
 
       for (const [rel, tgt] of Object.entries(tidy(thing) as any)) {
@@ -407,12 +417,7 @@ export class NoteParser {
     yield file;
   }
 
-  /**
-   * Enumerate things from the frontmatter and body of this document.
-   *
-   * @memberof NoteParser
-   */
-  async *things() {
+  async frontmatter(): Promise<Record<string, any>[]> {
     try {
       var lexeme = BlockLexer.lex(await this.note.read(false), {});
     } catch (err) {
@@ -420,15 +425,35 @@ export class NoteParser {
       throw err;
     }
 
+    return lexeme.meta as Record<string, any>[];
+  }
+
+  async body(): Promise<any> {
+    try {
+      var lexeme = BlockLexer.lex(await this.note.read(false), {});
+    } catch (err) {
+      console.error(`diatom: failed to lex ${this.note.fpath}`);
+      throw err;
+    }
+
+    return lexeme.tokens;
+  }
+
+  /**
+   * Enumerate things from the frontmatter and body of this document.
+   *
+   * @memberof NoteParser
+   */
+  async *things() {
     for (
       const thing of this.frontmatterThings(
-        lexeme.meta as Record<string, any>[],
+        await this.frontmatter(),
       )
     ) {
       yield thing;
     }
 
-    for (const thing of this.markdownBodyThings(lexeme.tokens)) {
+    for (const thing of this.markdownBodyThings(await this.body())) {
       yield thing;
     }
   }

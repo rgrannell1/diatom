@@ -29,6 +29,12 @@ export class Vault {
     this.subsumptions = new Axon.Models.Subsumptions();
   }
 
+  async map(fn: (note: Note) => Promise<any>) {
+    for await (const note of this.notes()) {
+      await fn(note);
+    }
+  }
+
   async *notes() {
     for await (const file of expandGlob(`${this.config.vault}/**.md`)) {
       yield new Note(this, file);
@@ -180,6 +186,11 @@ export class Note {
    */
   async hash(cache = false): Promise<string> {
     return Axon.id(await this.read(cache));
+  }
+
+  async frontmatter() {
+    const parser = new Parsers.NoteParser(this);
+    return parser.frontmatter();
   }
 
   async *things() {
