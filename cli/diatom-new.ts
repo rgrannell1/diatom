@@ -9,12 +9,15 @@ import { exists } from "https://deno.land/std/fs/mod.ts";
 
 export const DIATOM_NEW_FILE_CLI = `
 Usage:
-  diatom new file [<name>...]
+  diatom new file [--editor <editor-name>] [--] [<name>...]
   diatom (-h|--help)
 
 Description:
   Create a file from a template, then open it. If the file already exists, just
   open it.
+
+Options:
+  --editor <editor-name>    Open the file using the selected editor.
 `;
 
 const promptFilename = async () => {
@@ -23,8 +26,9 @@ const promptFilename = async () => {
 
 export async function newFile(argv: string[]) {
   const args = docopt(DIATOM_NEW_FILE_CLI, { argv, allowExtra: true });
-
   const config = await Config.read();
+  const editor = args['--editor']
+
   const names = (args["<name>"] ?? [])
     .map((name: string) => name.trim());
 
@@ -33,6 +37,9 @@ export async function newFile(argv: string[]) {
   }
 
   for (const name of names) {
+    if (name.length === 0) {
+      continue
+    }
     const fname = name.endsWith(".md") ? name : `${name}.md`;
 
     const fpath = join(config.vault, fname);
@@ -46,7 +53,7 @@ export async function newFile(argv: string[]) {
       await Deno.writeFile(fpath, new TextEncoder().encode(content));
     }
 
-    await Editor.openNote(config, fpath);
+    await Editor.openNote(config, fpath, editor);
   }
 }
 
@@ -57,6 +64,9 @@ Usage:
 
 Description:
   Create files and other items in your diatom notes
+
+Options:
+  --editor <editor-name>    Open the file using the selected editor.
 
 Commands:
   new file    create a file

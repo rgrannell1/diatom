@@ -27,11 +27,15 @@ export async function read(): Promise<Config> {
   ) as Config;
 }
 
-export const getEditor = (config: Config): Editor => {
+export const getEditor = (config: Config, name?: string): Editor => {
   const fallback = Deno.env.get("VISUAL") ?? "nano";
 
   return config.editors.find((editor: Editor) => {
-    return new Set(["yes", "true"]).has(editor.default.toLowerCase());
+    if (editor.name) {
+      return editor.name === name
+    } else {
+      new Set(["yes", "true"]).has(editor.default.toLowerCase())
+    }
   }) ?? {
     name: fallback,
     default: "yes",

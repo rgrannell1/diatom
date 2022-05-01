@@ -16,17 +16,20 @@ Description:
 Commands:
   list       List diatom files
   new        Construct new files
-  export     Export things from diatom
+  open       Open a diatom resource
+  rewrite    Rewrite diatom notes
 `;
 
 import { main as diatomNew } from "./diatom-new.ts";
 import { main as diatomList } from "./diatom-list.ts";
 import { main as diatomOpen } from "./diatom-open.ts";
+import { main as diatomRewrite } from "./diatom-rewrite.ts";
 
 const commands: Record<string, any> = {
   new: diatomNew,
   open: diatomOpen,
   list: diatomList,
+  rewrite: diatomRewrite
 };
 
 const [command] = Deno.args;

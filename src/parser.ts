@@ -3,8 +3,7 @@ import {
   Token,
   TokenType,
 } from "https://raw.githubusercontent.com/ubersl0th/markdown/master/src/interfaces.ts";
-
-import * as Models from "./models.ts";
+import { Note } from "./note.ts";
 
 type Lexeme = Token & { typeLabel: string };
 
@@ -33,9 +32,9 @@ const readHeading = (state: ParserState, lexeme: Lexeme) => {
  * @class NoteParser
  */
 export class NoteParser {
-  note: Models.Note;
+  note: Note;
 
-  constructor(note: Models.Note) {
+  constructor(note: Note) {
     this.note = note;
   }
 
@@ -396,12 +395,12 @@ export class NoteParser {
       // make it easy to see your own data
       if (thing.is) {
         if (Array.isArray(thing.is)) {
-          thing.is.push('Diatom/FrontmatterThing')
+          thing.is.push("Diatom/FrontmatterThing");
         } else {
-          thing.is = [thing.is, 'Diatom/FrontmatterThing']
+          thing.is = [thing.is, "Diatom/FrontmatterThing"];
         }
       } else {
-        thing.is = ['Diatom/FrontmatterThing']
+        thing.is = ["Diatom/FrontmatterThing"];
       }
       yield tidy(thing);
 
