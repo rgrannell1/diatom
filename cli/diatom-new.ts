@@ -21,13 +21,13 @@ Options:
 `;
 
 const promptFilename = async () => {
-  return (prompt("> filename:") ?? "").trim();
+  return (prompt("> name 📖:") ?? "").trim();
 };
 
 export async function newFile(argv: string[]) {
   const args = docopt(DIATOM_NEW_FILE_CLI, { argv, allowExtra: true });
   const config = await Config.read();
-  const editor = args['--editor']
+  const editor = args["--editor"];
 
   const names = (args["<name>"] ?? [])
     .map((name: string) => name.trim());
@@ -38,7 +38,7 @@ export async function newFile(argv: string[]) {
 
   for (const name of names) {
     if (name.length === 0) {
-      continue
+      continue;
     }
     const fname = name.endsWith(".md") ? name : `${name}.md`;
 

@@ -34,8 +34,17 @@ export class Vault {
     let idx = 0;
     for await (const note of this.notes()) {
       await fn(note, idx);
-      idx++
+      idx++;
     }
+  }
+
+  async noteCount(): Promise<number> {
+    let count = 0
+    for await (const _ of expandGlob(`${this.config.vault}/**.md`)) {
+      count++
+    }
+
+    return count
   }
 
   async *notes(): AsyncGenerator<Note> {
@@ -111,12 +120,12 @@ export class Vault {
    * @param {number} offset
    * @memberof Vault
    */
-  async rewriteNotes (unsupervised: boolean, offset: number) {
+  async rewriteNotes(unsupervised: boolean, offset: number) {
     await this.map(async (note: Note, idx: number) => {
       if (idx > offset) {
-        await promptRewrite(note, unsupervised)
+        await promptRewrite(note, unsupervised);
       }
-    })
+    });
   }
 
   /**

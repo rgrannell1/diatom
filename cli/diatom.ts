@@ -1,23 +1,37 @@
 #!/bin/sh
 //bin/true; exec /home/rg/.deno/bin/deno run -A "$0" "$@"
 
+import { bold, gray, cyan } from "https://deno.land/std/fmt/colors.ts";
+import { basename } from "https://deno.land/std/path/mod.ts";
+
+import * as Config from '../src/config.ts'
+import { Vault } from '../src/vault.ts'
+
+const vault = new Vault(await Config.read())
+let counts = await vault.noteCount()
+
+const vaultUri = `${basename(vault.config.vault)}`
+
+
+
 export const DIATOM_CLI = `
-Usage:
-  diatom <command> [options] [<args>...]
-  diatom (-h|--help)
+${bold('diatom')} 📚
+${gray('---------------------------------------------')}
+${counts} notes in ${gray(vaultUri)}
 
-Description:
-  Diatom bridges your markdown notes with an Axon database. It:
+List notes:
+  ${cyan('di list notes')}
+Create a note:
+  ${cyan('di new note <title>')}
+Open a note:
+  ${cyan('di open note <title>')}
+Open diatom vault:
+  ${cyan('di open vault')}
+Apply rewriters to notes
+  ${cyan('di rewrite')}
 
-  - Exports note information to Axon
-  - Lists or counts notes
-  - Creates new notes from a template file
-
-Commands:
-  list       List diatom files
-  new        Construct new files
-  open       Open a diatom resource
-  rewrite    Rewrite diatom notes
+${gray('---------------------------------------------')}
+${ gray('di list notes') + cyan(' • ') + gray('di new note') + cyan(' • ') + gray('di open note') + cyan(' • ') + gray('di open vault') + cyan(' • ') + gray('di rewrite') + cyan(' • ') + gray('di export')}
 `;
 
 import { main as diatomNew } from "./diatom-new.ts";
@@ -29,7 +43,7 @@ const commands: Record<string, any> = {
   new: diatomNew,
   open: diatomOpen,
   list: diatomList,
-  rewrite: diatomRewrite
+  rewrite: diatomRewrite,
 };
 
 const [command] = Deno.args;

@@ -2,7 +2,7 @@ import * as Axon from "https://raw.githubusercontent.com/rgrannell1/axon/main/mo
 import * as Parsers from "./parser.ts";
 import { Vault } from "./vault.ts";
 
-export type TextFragment = [string, {start: number, end: number}];
+export type TextFragment = [string, { start: number; end: number }];
 
 /**
  * A Markdown note

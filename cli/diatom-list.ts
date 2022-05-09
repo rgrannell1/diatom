@@ -1,40 +1,41 @@
 #!/bin/sh
 //bin/true; exec /home/rg/.deno/bin/deno run -A "$0" "$@"
 
-import * as Models from "../src/models.ts";
 import * as Config from "../src/config.ts";
 import * as Editor from "../src/editor.ts";
+import { Vault } from "../src/vault.ts";
+import { Note } from "../src/note.ts";
 
 import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
 
 export const DIATOM_LIST_FILES_CLI = `
 Usage:
-  diatom list files [-c|--count] [-n|--name]
-  diatom list files [-c|--count] [-n|--name]
-  diatom list files [-r|--random] [-n|--name]
-  diatom list files [-o|--open] [-r|--random]
+  diatom list notes [-c|--count] [-n|--name]
+  diatom list notes [-c|--count] [-n|--name]
+  diatom list notes [-r|--random] [-n|--name]
+  diatom list notes [-o|--open] [-r|--random]
   diatom (-h|--help)
 
 Description:
-  List files in a diatom markdown vault
+  List notes in a diatom markdown vault
 
 Options:
-  -o,--open     Open the file using the editor determined by $VISUAL
-  -c,--count    Count the number of matches
-  -r,--random   Select a random file
-  -n,--name     Just show the file name, not the full path
+  -o, --open     Open the file using the editor determined by $VISUAL
+  -c, --count    Count the number of matches
+  -r, --random   Select a random file
+  -n, --name     Just show the file name, not the full path
 `;
 
-export async function listFiles(argv: string[]) {
+export async function listNotes(argv: string[]) {
   const args = docopt(DIATOM_LIST_FILES_CLI, { argv, allowExtra: true });
 
   const config = await Config.read();
 
-  if (!args.files) {
+  if (!args.notes) {
     return;
   }
 
-  const vault = new Models.Vault(config);
+  const vault = new Vault(config);
 
   if (args["--count"]) {
     let counter = 0;
@@ -48,7 +49,7 @@ export async function listFiles(argv: string[]) {
   }
 
   let idx = 0;
-  let selection: Models.Note | undefined = undefined;
+  let selection: Note | undefined = undefined;
 
   for await (const file of vault.notes()) {
     if (args["--random"]) {
@@ -87,10 +88,10 @@ Usage:
   diatom (-h|--help)
 
 Description:
-  List files
+  List notes
 
 Commands:
-  list files    create a file
+  list notes    create a file
 
 Options:
   -o,--open     Open the file using the editor determined by $VISUAL
@@ -102,8 +103,8 @@ Options:
 export async function main(argv: string[]) {
   const args = docopt(DIATOM_LIST_CLI, { argv, allowExtra: true });
 
-  if (args["<command>"] === "files") {
-    await listFiles(argv);
+  if (args["<command>"] === "notes") {
+    await listNotes(argv);
   } else {
     throw new Error("diatom: not implemented");
   }

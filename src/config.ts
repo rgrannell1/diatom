@@ -32,9 +32,9 @@ export const getEditor = (config: Config, name?: string): Editor => {
 
   return config.editors.find((editor: Editor) => {
     if (editor.name) {
-      return editor.name === name
+      return editor.name === name;
     } else {
-      new Set(["yes", "true"]).has(editor.default.toLowerCase())
+      new Set(["yes", "true"]).has(editor.default.toLowerCase());
     }
   }) ?? {
     name: fallback,

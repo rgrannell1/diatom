@@ -13,9 +13,9 @@
 import { parse } from "https://deno.land/std@0.95.0/flags/mod.ts";
 
 import * as Config from "../src/config.ts";
-import * as Models from "../src/models.ts";
+import { State, Vault } from "../src/vault.ts";
 
-async function* readVault(vault: Models.Vault, state: Models.State) {
+async function* readVault(vault: Vault, state: State) {
   for await (const thing of vault.things(state)) {
     yield thing;
   }
@@ -25,7 +25,7 @@ export async function main() {
   const flags = parse(Deno.args);
 
   const config = await Config.read();
-  const vault = new Models.Vault(config);
+  const vault = new Vault(config);
 
   const state = JSON.parse(flags.fetch ?? "{}");
   const newState = await vault.scan(state);
@@ -47,13 +47,6 @@ export async function main() {
     for await (const thing of readVault(vault, newState)) {
       console.log(JSON.stringify(thing));
     }
-
-    // OOM; use inodes or something more efficient?
-    //    console.log(JSON.stringify({
-    //      id: "Diatom State",
-    //      is: "Axon/PluginState",
-    //      state: JSON.stringify({ newState }),
-    //    }));
   } else {
     console.log("diatom: invalid arguments provided");
     console.log(JSON.stringify(Deno.args));

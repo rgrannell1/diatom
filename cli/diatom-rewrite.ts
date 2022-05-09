@@ -2,7 +2,7 @@
 //bin/true; exec /home/rg/.deno/bin/deno run -A "$0" "$@"
 
 import * as Config from "../src/config.ts";
-import {Vault} from "../src/vault.ts";
+import { Vault } from "../src/vault.ts";
 
 import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
 
@@ -28,5 +28,5 @@ export async function main(argv: string[]) {
   const offset = args["--offset"];
 
   const vault = new Vault(config);
-  await vault.rewriteNotes(unsupervised, offset)
+  await vault.rewriteNotes(unsupervised, offset);
 }
