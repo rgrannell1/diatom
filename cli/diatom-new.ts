@@ -9,7 +9,7 @@ import { exists } from "https://deno.land/std/fs/mod.ts";
 
 export const DIATOM_NEW_FILE_CLI = `
 Usage:
-  diatom new file [--editor <editor-name>] [--] [<name>...]
+  diatom new note [--editor <editor-name>] [--] [<name>...]
   diatom (-h|--help)
 
 Description:
@@ -24,7 +24,7 @@ const promptFilename = async () => {
   return (prompt("> name 📖:") ?? "").trim();
 };
 
-export async function newFile(argv: string[]) {
+export async function newNote(argv: string[]) {
   const args = docopt(DIATOM_NEW_FILE_CLI, { argv, allowExtra: true });
   const config = await Config.read();
   const editor = args["--editor"];
@@ -63,13 +63,13 @@ Usage:
   diatom (-h|--help)
 
 Description:
-  Create files and other items in your diatom notes
+  Create note and other items in your diatom notes
 
 Options:
-  --editor <editor-name>    Open the file using the selected editor.
+  --editor <editor-name>    Open the note using the selected editor.
 
 Commands:
-  new file    create a file
+  new note    create a note
 `;
 
 import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
@@ -77,8 +77,8 @@ import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
 export async function main(argv: string[]) {
   const args = docopt(DIATOM_NEW_CLI, { argv, allowExtra: true });
 
-  if (args["<command>"] === "file") {
-    await newFile(argv);
+  if (args["<command>"] === "note") {
+    await newNote(argv);
   } else {
     throw new Error("diatom: not implemented");
   }

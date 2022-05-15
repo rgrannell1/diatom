@@ -27,10 +27,10 @@ export async function openNote(config: Config, fpath: string, editor?: string) {
  * @param {Config} config
  * @param {string} fpath
  */
-export async function openVault(config: Config) {
-  const editor = getEditor(config);
+export async function openVault(config: Config, editor?: string) {
+  const selected = getEditor(config, editor);
   const proc = Deno.run({
-    cmd: editor.open_folder.map((bit: string) =>
+    cmd: selected.open_folder.map((bit: string) =>
       bit.replace("$fpath", config.vault)
     ),
   });
