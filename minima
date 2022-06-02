@@ -1,0 +1,23 @@
+#! /usr/bin/env zsh
+
+VAULT=$(cat ~/.config/diatom.yaml | yq '.vault')
+query_selection_pair="$(ls --quoting-style=literal "$VAULT" | fzf --print-query --exact --preview="batcat --color always --language markdown $VAULT/{}")"
+
+query=$(echo "$query_selection_pair" | sed -n '1 p')
+selection=$(echo "$query_selection_pair" | sed -n '2 p')
+
+
+if [ -z "$query"] && [ -z "$selection" ];
+then
+  echo 'no input or selection provided'
+  exit 1
+elif [ -z "$selection" ];
+then
+  # -- nothing selected, create a new file
+
+  di new note "$query" "$@"
+else
+  # -- open selected file
+
+  di open note "$selection" "$@"
+fi
