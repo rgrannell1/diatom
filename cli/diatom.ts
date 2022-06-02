@@ -1,37 +1,39 @@
 #!/bin/sh
 //bin/true; exec /home/rg/.deno/bin/deno run -A "$0" "$@"
 
-import { bold, gray, cyan } from "https://deno.land/std/fmt/colors.ts";
+import { bold, cyan, gray } from "https://deno.land/std/fmt/colors.ts";
 import { basename } from "https://deno.land/std/path/mod.ts";
 
-import * as Config from '../src/config.ts'
-import { Vault } from '../src/vault.ts'
+import * as Config from "../src/config.ts";
+import { Vault } from "../src/vault.ts";
 
-const vault = new Vault(await Config.read())
-let counts = await vault.noteCount()
+const vault = new Vault(await Config.read());
+let counts = await vault.noteCount();
 
-const vaultUri = `${basename(vault.config.vault)}`
-
-
+const vaultUri = `${basename(vault.config.vault)}`;
 
 export const DIATOM_CLI = `
-${bold('diatom')} 📚
-${gray('---------------------------------------------')}
+${bold("diatom")} 📚
+${gray("---------------------------------------------")}
 ${counts} notes in ${gray(vaultUri)}
 
 List notes:
-  ${cyan('di list notes')}
+  ${cyan("di list notes")}
 Create a note:
-  ${cyan('di new note <title>')}
+  ${cyan("di new note <title>")}
 Open a note:
-  ${cyan('di open note <title>')}
+  ${cyan("di open note <title>")}
 Open diatom vault:
-  ${cyan('di open vault')}
+  ${cyan("di open vault")}
 Apply rewriters to notes
-  ${cyan('di rewrite')}
+  ${cyan("di rewrite")}
 
-${gray('---------------------------------------------')}
-${ gray('di list notes') + cyan(' • ') + gray('di new note') + cyan(' • ') + gray('di open note') + cyan(' • ') + gray('di open vault') + cyan(' • ') + gray('di rewrite') + cyan(' • ') + gray('di export')}
+${gray("---------------------------------------------")}
+${
+  gray("di list notes") + cyan(" • ") + gray("di new note") + cyan(" • ") +
+  gray("di open note") + cyan(" • ") + gray("di open vault") + cyan(" • ") +
+  gray("di rewrite") + cyan(" • ") + gray("di export")
+}
 `;
 
 import { main as diatomNew } from "./diatom-new.ts";

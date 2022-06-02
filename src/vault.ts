@@ -39,12 +39,12 @@ export class Vault {
   }
 
   async noteCount(): Promise<number> {
-    let count = 0
+    let count = 0;
     for await (const _ of expandGlob(`${this.config.vault}/**.md`)) {
-      count++
+      count++;
     }
 
-    return count
+    return count;
   }
 
   async *notes(): AsyncGenerator<Note> {

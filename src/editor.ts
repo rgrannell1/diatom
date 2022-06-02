@@ -13,11 +13,22 @@ import { Note } from "./note.ts";
  */
 export async function openNote(config: Config, fpath: string, editor?: string) {
   const selected = getEditor(config, editor);
-  const proc = Deno.run({
-    cmd: selected.open_note.map((bit: string) => bit.replace("$fpath", fpath)),
-  });
 
-  await proc.status();
+  try {
+    const proc = Deno.run({
+      cmd: selected.open_note.map((bit: string) =>
+        bit.replace("$fpath", fpath)
+      ),
+    });
+
+    await proc.status();
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`failed to open ${fpath}; ${err.message}`);
+      Deno.exit(1);
+    }
+    throw err;
+  }
 }
 
 /**
