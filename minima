@@ -1,5 +1,18 @@
 #! /usr/bin/env sh
 
+if ! command -v yq &> /dev/null
+then
+  echo "yq could not be found on PATH"
+  exit 1
+fi
+
+if ! command -v fzf &> /dev/null
+then
+  echo "fzf could not be found on PATH"
+  exit 1
+fi
+
+
 VAULT=$(cat ~/.config/diatom.yaml | yq '.vault')
 query_selection_pair="$(ls --quoting-style=literal "$VAULT" | fzf --tac --print-query --exact --preview="batcat --color always --language markdown $VAULT/{}")"
 
