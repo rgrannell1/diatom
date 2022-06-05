@@ -1,6 +1,6 @@
 # diatom
 
-Diatom is a semantic n
+Diatom is a CLI tool for creating and searching notes (in an editor of your choice). It supports export of note information as semantic "entities" that can be injested by knowledge-base tools.
 
 ## Build
 
