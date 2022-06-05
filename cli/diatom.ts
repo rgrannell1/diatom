@@ -8,7 +8,7 @@ import * as Config from "../src/config.ts";
 import { Vault } from "../src/vault.ts";
 
 const vault = new Vault(await Config.read());
-let counts = await vault.noteCount();
+const counts = await vault.noteCount();
 
 const vaultUri = `${basename(vault.config.vault)}`;
 
@@ -40,12 +40,14 @@ import { main as diatomNew } from "./diatom-new.ts";
 import { main as diatomList } from "./diatom-list.ts";
 import { main as diatomOpen } from "./diatom-open.ts";
 import { main as diatomRewrite } from "./diatom-rewrite.ts";
+import { main as diatomExport } from "./diatom-export.ts";
 
 const commands: Record<string, any> = {
   new: diatomNew,
   open: diatomOpen,
   list: diatomList,
-  rewrite: diatomRewrite
+  rewrite: diatomRewrite,
+  export: diatomExport
 };
 
 const [command] = Deno.args;

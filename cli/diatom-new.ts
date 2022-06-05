@@ -6,7 +6,6 @@ import * as Config from "../src/config.ts";
 import * as Template from "../src/template.ts";
 import { join } from "https://deno.land/std@0.127.0/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
-import { readLines } from "https://deno.land/std@0.79.0/io/bufio.ts";
 
 export const DIATOM_NEW_FILE_CLI = `
 Usage:

@@ -10,6 +10,8 @@
  *                          date.
  */
 
+import docopt from "https://deno.land/x/docopt@v1.0.1/dist/docopt.mjs";
+
 import { parse } from "https://deno.land/std@0.95.0/flags/mod.ts";
 
 import * as Config from "../src/config.ts";
@@ -21,7 +23,22 @@ async function* readVault(vault: Vault, state: State) {
   }
 }
 
-export async function main() {
+
+export const DIATOM_EXPORT_FILE_CLI = `
+Usage:
+  diatom export [(--plugin|--fetch)]
+  diatom (-h|--help)
+
+Description:
+  Export note information as JSON
+
+Options:
+  --plugin    show Axon importer plugin information
+  --fetch     fetch triples in Axon entity format
+`;
+
+export async function main(argv: string[]) {
+  const args = docopt(DIATOM_EXPORT_FILE_CLI, { argv, allowExtra: true });
   const flags = parse(Deno.args);
 
   const config = await Config.read();
@@ -48,13 +65,8 @@ export async function main() {
       console.log(JSON.stringify(thing));
     }
   } else {
-    console.log("diatom: invalid arguments provided");
+    console.log("diatom: invalid export arguments provided");
     console.log(JSON.stringify(Deno.args));
     Deno.exit(1);
   }
 }
-
-main().catch((err) => {
-  console.error(err);
-  Deno.exit(1);
-});
