@@ -1,10 +1,12 @@
+# diatom
+
+Diatom is a semantic n
+
 ## Build
 
 ```bash
-bs install
+rs install
 ```
-
-# diatom
 
 Extract rich, linked-data from a markdown variant (compatible with
 [Axon](https://github.com/rgrannell1/axon)). Update notes programmatically
