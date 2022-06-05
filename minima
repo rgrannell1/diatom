@@ -1,20 +1,16 @@
 #! /usr/bin/env sh
 
-if ! hash yq 2> /dev/null
-then
-  echo "yq could not be found on PATH"
-  exit 1
-fi
-
-if ! hash fzf 2> /dev/null
-then
-  echo "fzf could not be found on PATH"
-  exit 1
-fi
+# -- check commands are present
+for cmd in fzf pcregrep; do
+  if ! hash "$cmd" 2> /dev/null
+  then
+    echo "$cmd could not be found on PATH"
+    exit 1
+  fi
+done
 
 
-
-VAULT=$(cat ~/.config/diatom.yaml | yq '.vault')
+VAULT=$(pcregrep -o1 'vault:\s*"(.+)"' ~/.config/diatom.yaml)
 
 
 if [ "$OSTYPE" = 'linux' ]

@@ -1,6 +1,6 @@
 import { Note } from "./note.ts";
 
-import { rewriteNote, showDiff } from "../chop3.ts";
+import { rewriteNote, showDiff } from "./chop3.ts";
 
 export const promptRewrite = async (note: Note, unsupervised: boolean) => {
   const text = await note.read();

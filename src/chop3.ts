@@ -4,14 +4,14 @@ import {
   stringify,
 } from "https://deno.land/std@0.132.0/encoding/yaml.ts";
 
-import { Note, TextFragment } from "./src/note.ts";
+import { Note, TextFragment } from "./note.ts";
 import { Entity } from "./utils.ts";
 
-import { rewritePinboardBookmark } from "./rewrites/pinboard.ts";
+import { rewritePinboardBookmark } from "../rewrites/pinboard.ts";
 import {
   removeDuplicates,
   rewriteObsidianNote,
-} from "./rewrites/obsidian-note.ts";
+} from "../rewrites/obsidian-note.ts";
 
 /**
  * Update parent text with a text-fragment

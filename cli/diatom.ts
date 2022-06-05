@@ -45,7 +45,7 @@ const commands: Record<string, any> = {
   new: diatomNew,
   open: diatomOpen,
   list: diatomList,
-  rewrite: diatomRewrite,
+  rewrite: diatomRewrite
 };
 
 const [command] = Deno.args;
