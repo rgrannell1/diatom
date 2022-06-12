@@ -29,8 +29,8 @@ export async function main(argv: string[]) {
   const unsupervised = args["--unsupervised"];
   const offset = args["--offset"];
 
-  const plugin = await import(args['--plugin'])
+  const {rules} = await import(args['--plugin'])
 
   const vault = new Vault(config);
-  await vault.rewriteNotes(plugin, unsupervised, offset);
+  await vault.rewriteNotes(rules, unsupervised, offset);
 }

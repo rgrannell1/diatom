@@ -1,16 +1,16 @@
 
 import { Note } from "./note.ts";
 import { Diff } from './diff.ts';
-import { IRewritePlugin } from './types.ts';
+import { Rewrite } from './types.ts';
 
 
-function applyRewrites(rewriter: IRewritePlugin, content: string) {
-  return rewriter.rules().reduce((modified, rule) => {
+function applyRewrites(rewriter: () => Rewrite[], content: string) {
+  return rewriter().reduce((modified, rule) => {
     return rule.rewrite(modified)
   }, content)
 }
 
-export const promptRewrite = async (note: Note, rewriter: IRewritePlugin, unsupervised: boolean) => {
+export const promptRewrite = async (note: Note, rewriter: () => Rewrite[], unsupervised: boolean) => {
   const text = await note.read();
   const updated = applyRewrites(rewriter, text);
 

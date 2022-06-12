@@ -3,7 +3,7 @@ import { expandGlob } from "https://deno.land/std/fs/mod.ts";
 
 import * as Axon from "https://raw.githubusercontent.com/rgrannell1/axon/main/mod.ts";
 import { Note } from "./note.ts";
-import { IRewritePlugin } from "./types.ts";
+import { Rewrite } from "./types.ts";
 import { promptRewrite } from "./rewrite.ts";
 
 /*
@@ -124,14 +124,10 @@ export class Vault {
    * @param {number} offset
    * @memberof Vault
    */
-  async rewriteNotes(plugin: IRewritePlugin, unsupervised: boolean, offset: number) {
-    const rewritePlugin = new class {
-      rules() { return [] }
-    }
-
+  async rewriteNotes(plugin: () => Rewrite[], unsupervised: boolean, offset: number) {
     await this.map(async (note: Note, idx: number) => {
       if (idx > offset) {
-        await promptRewrite(note, rewritePlugin, unsupervised);
+        await promptRewrite(note, plugin, unsupervised);
       }
     });
   }
