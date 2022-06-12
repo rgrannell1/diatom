@@ -1,18 +1,26 @@
+
 import { Note } from "./note.ts";
+import { Diff } from './diff.ts';
+import { IRewritePlugin } from './types.ts';
 
-import { rewriteNote, showDiff } from "./chop3.ts";
 
-export const promptRewrite = async (note: Note, unsupervised: boolean) => {
+function applyRewrites(rewriter: IRewritePlugin, content: string) {
+  return rewriter.rules().reduce((modified, rule) => {
+    return rule.rewrite(modified)
+  }, content)
+}
+
+export const promptRewrite = async (note: Note, rewriter: IRewritePlugin, unsupervised: boolean) => {
   const text = await note.read();
-  const updated = rewriteNote(text);
+  const updated = applyRewrites(rewriter, text);
 
-  if (!updated) {
+  if (text === updated) {
     return;
   }
 
   if (!unsupervised) {
     console.clear();
-    showDiff(text, updated);
+    await Diff.diff(text, updated);
 
     if (prompt("Happy to continue?")?.toLowerCase() !== "y") {
       console.log("ok then!");

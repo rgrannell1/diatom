@@ -3,6 +3,7 @@ import { expandGlob } from "https://deno.land/std/fs/mod.ts";
 
 import * as Axon from "https://raw.githubusercontent.com/rgrannell1/axon/main/mod.ts";
 import { Note } from "./note.ts";
+import { IRewritePlugin } from "./types.ts";
 import { promptRewrite } from "./rewrite.ts";
 
 /*
@@ -38,6 +39,9 @@ export class Vault {
     }
   }
 
+  /*
+   * Count note-files
+   */
   async noteCount(): Promise<number> {
     let count = 0;
     for await (const _ of expandGlob(`${this.config.vault}/**.md`)) {
@@ -120,10 +124,14 @@ export class Vault {
    * @param {number} offset
    * @memberof Vault
    */
-  async rewriteNotes(unsupervised: boolean, offset: number) {
+  async rewriteNotes(plugin: IRewritePlugin, unsupervised: boolean, offset: number) {
+    const rewritePlugin = new class {
+      rules() { return [] }
+    }
+
     await this.map(async (note: Note, idx: number) => {
       if (idx > offset) {
-        await promptRewrite(note, unsupervised);
+        await promptRewrite(note, rewritePlugin, unsupervised);
       }
     });
   }

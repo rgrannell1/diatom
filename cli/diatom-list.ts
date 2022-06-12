@@ -40,7 +40,7 @@ export async function listNotes(argv: string[]) {
   if (args["--count"]) {
     let counter = 0;
 
-    for await (const file of vault.notes()) {
+    for await (const _ of vault.notes()) {
       counter++;
     }
 

@@ -3,9 +3,6 @@
 
 import * as Editor from "../src/editor.ts";
 import * as Config from "../src/config.ts";
-import * as Template from "../src/template.ts";
-import { join } from "https://deno.land/std@0.127.0/path/mod.ts";
-import { exists } from "https://deno.land/std/fs/mod.ts";
 
 export const DIATOM_NEW_FILE_CLI = `
 Usage:
@@ -37,23 +34,7 @@ export async function newNote(argv: string[]) {
   }
 
   for (const name of names) {
-    if (name.length === 0) {
-      continue;
-    }
-    const fname = name.endsWith(".md") ? name : `${name}.md`;
-
-    const fpath = join(config.vault, fname);
-    const content = await Template.file({
-      name: name.replace(/\.md$/, ""),
-      date: (new Date()).toLocaleDateString("en-CA"),
-    });
-
-    const pathExists = await exists(fpath);
-    if (!pathExists) {
-      await Deno.writeFile(fpath, new TextEncoder().encode(content));
-    }
-
-    await Editor.openNote(config, fpath, editor);
+    await Editor.newNote(config, name, editor)
   }
 }
 

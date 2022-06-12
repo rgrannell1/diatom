@@ -1,6 +1,10 @@
 import * as Constants from "./constants.ts";
 import { parse as yamlParse } from "https://deno.land/std@0.82.0/encoding/yaml.ts";
 
+/*
+ * Editor configuration
+ *
+ */
 export type Editor = {
   name: string;
   default: string;
@@ -9,6 +13,10 @@ export type Editor = {
   open_folder: string[];
 };
 
+/*
+ * The config file follows this format
+ *
+ */
 export type Config = {
   vault: string;
   templates: Record<string, string>;
@@ -27,8 +35,11 @@ export async function read(): Promise<Config> {
   ) as Config;
 }
 
+/* Get the configured editor, or fallback to default otherwise.
+ *
+ */
 export const getEditor = (config: Config, name?: string): Editor => {
-  const fallback = Deno.env.get("VISUAL") ?? "nano";
+  const fallback = Deno.env.get(Constants.EDITOR_ENV_VARIABLE) ?? Constants.DEFAULT_EDITOR;
 
   return config.editors.find((editor: Editor) => {
     if (editor.name) {
