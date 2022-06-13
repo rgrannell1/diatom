@@ -1,2 +1,2 @@
 
-import {Rewrite, IRewritePlugin} from './src/types.ts';
+export {Rewrite, IRewritePlugin} from './src/types.ts';

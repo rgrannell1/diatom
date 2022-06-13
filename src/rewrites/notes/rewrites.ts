@@ -11,24 +11,20 @@ const title = Re.firstCaptureGroup(/^#\s+(.+)/m);
 // -- match each wikilink, without inner parsing
 const wikilinks = Re.eachMatch(/\[{2}[^\]]+\]{2}\S*/gm);
 
-const NoteOptics = {
-  parts: {
-    frontmatter,
-    title,
-    wikilinks,
-  },
-  replacements: {
-    multiNewlines: Re.eachMatch(/\n{3,}/gm),
-  },
-};
+// -- match multiple newlines
+const multiNewlines = Re.eachMatch(/\n{3,}/gm);
 
+/*
+ * Plugin rewrites
+ *
+ */
 export function rules(): Rewrite[] {
   return [
     {
       name: "multiple-newlines-to-single",
       description: "collapse multiple newlines to a single newline",
-      rewrite: NoteOptics
-        .replacements.multiNewlines.modify.bind(null, (_: string) => "\n"),
+      rewrite: multiNewlines.modify.bind(null, (_: string) => "\n\n"),
     },
+
   ];
 }

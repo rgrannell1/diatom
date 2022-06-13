@@ -1,6 +1,11 @@
 # diatom
 
-Diatom is a CLI tool for creating and searching notes (in an editor of your choice). It supports export of note information as semantic "entities" that can be injested by knowledge-base tools.
+Diatom is a CLI tool for creating and searching notes (in an editor of your choice). It:
+
+- Fuzzy searches notes by title or text
+- Quickly creates new note-files from a template
+- Optionally exports data as semantic triples for analysis by another tool
+- Supports automated rewrites, with manual diff approval or fully automatic rewrites
 
 ## Build
 

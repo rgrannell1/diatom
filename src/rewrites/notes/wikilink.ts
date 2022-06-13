@@ -4,6 +4,10 @@ type WikilinkData = {
   suffix?: string;
 };
 
+/*
+ * Wikilink representation (string, object)
+ *
+ */
 export class Wikilink {
   static from(text: string): WikilinkData {
     const labelledWikilink =
