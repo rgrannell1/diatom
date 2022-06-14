@@ -39,7 +39,8 @@ export async function read(): Promise<Config> {
  *
  */
 export const getEditor = (config: Config, name?: string): Editor => {
-  const fallback = Deno.env.get(Constants.EDITOR_ENV_VARIABLE) ?? Constants.DEFAULT_EDITOR;
+  const fallback = Deno.env.get(Constants.EDITOR_ENV_VARIABLE) ??
+    Constants.DEFAULT_EDITOR;
 
   return config.editors.find((editor: Editor) => {
     if (editor.name) {

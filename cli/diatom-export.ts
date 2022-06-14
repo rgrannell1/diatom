@@ -23,7 +23,6 @@ async function* readVault(vault: Vault, state: State) {
   }
 }
 
-
 export const DIATOM_EXPORT_FILE_CLI = `
 Usage:
   diatom export [(--plugin|--fetch)]

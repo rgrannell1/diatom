@@ -1,8 +1,10 @@
-
 /*
  * Display a file diff side-by-side, with colour
+*
  */
 export class Diff {
+  static async isInstalled() {
+  }
   static async diff(older: string, newer: string) {
     const olderFpath = await Deno.makeTempFile();
     const newerFpath = await Deno.makeTempFile();
@@ -12,9 +14,11 @@ export class Diff {
       Deno.writeTextFile(newerFpath, newer),
     ]);
 
+    console.clear();
     const proc = Deno.run({
       cmd: [
         "icdiff",
+        "--line-numbers",
         olderFpath,
         newerFpath,
       ],

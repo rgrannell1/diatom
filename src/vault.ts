@@ -124,10 +124,14 @@ export class Vault {
    * @param {number} offset
    * @memberof Vault
    */
-  async rewriteNotes(plugin: () => Rewrite[], unsupervised: boolean, offset: number) {
+  async rewriteNotes(
+    rules: () => Rewrite[],
+    unsupervised: boolean,
+    offset: number,
+  ) {
     await this.map(async (note: Note, idx: number) => {
       if (idx > offset) {
-        await promptRewrite(note, plugin, unsupervised);
+        await promptRewrite(note, rules, unsupervised);
       }
     });
   }

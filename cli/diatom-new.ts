@@ -34,7 +34,7 @@ export async function newNote(argv: string[]) {
   }
 
   for (const name of names) {
-    await Editor.newNote(config, name, editor)
+    await Editor.newNote(config, name, editor);
   }
 }
 

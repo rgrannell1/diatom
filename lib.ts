@@ -1,2 +1,1 @@
-
-export {Rewrite, IRewritePlugin} from './src/types.ts';
+export { IRewritePlugin, Rewrite } from "./src/types.ts";

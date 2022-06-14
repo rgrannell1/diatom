@@ -34,12 +34,12 @@ export async function main(argv: string[]) {
   const name = args["<name>"];
 
   if (args.note) {
-    let fpath = join(config.vault, name)
+    let fpath = join(config.vault, name);
 
     await Editor.openNote(config, fpath, args["--editor"]);
   } else if (args.vault) {
     await Editor.openVault(config, args["--editor"]);
   } else {
-    throw new Error('failed')
+    throw new Error("failed");
   }
 }

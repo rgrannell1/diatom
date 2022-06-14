@@ -29,7 +29,7 @@ export async function main(argv: string[]) {
   const unsupervised = args["--unsupervised"];
   const offset = args["--offset"];
 
-  const {rules} = await import(args['--plugin'])
+  const { rules } = await import(args["--plugin"]);
 
   const vault = new Vault(config);
   await vault.rewriteNotes(rules, unsupervised, offset);
