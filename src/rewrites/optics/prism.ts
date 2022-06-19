@@ -13,14 +13,16 @@ export abstract class Prism<Whole, Part> {
    *
    * Apply a function to a part of the data, if that data is defined
    */
-  modify(fn: (part: Part) => Part, whole: Whole): Whole {
-    const part = this.view(whole);
+  modify(fn: (part: Part) => Part) {
+    return (whole: Whole): Whole => {
+      const part = this.view(whole);
 
-    if (typeof part === "undefined") {
-      return whole;
+      if (typeof part === "undefined") {
+        return whole;
+      }
+
+      return this.set(fn(part), whole);
     }
-
-    return this.set(fn(part), whole);
   }
 
   /*

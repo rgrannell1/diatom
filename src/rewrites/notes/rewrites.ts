@@ -2,6 +2,20 @@ import Re from "../text/index.ts";
 
 import { Rewrite } from "../../types.ts";
 
+
+const addSuffix = (suffix: string) => {
+  return (text: string) => {
+    return `${text}${suffix}`;
+  };
+};
+
+const Const = (text: string) => {
+  return (_: string) => {
+    return text;
+  }
+}
+
+
 // -- match YAML frontmatter, capturing the yaml block's contents
 const frontmatter = Re.firstCaptureGroup(/^---\n(.+)\n---/sm);
 
@@ -18,14 +32,12 @@ const unspacedTitle = Re.eachMatch(/^(#.+)\n(?=[^\n])/gm);
 
 const unspacedQuote = Re.eachMatch(/^(\>.+)\n(?=[^\n\>])/gm);
 
-const addSuffix = (suffix: string) => {
-  return (text: string) => {
-    return `${text}${suffix}`;
-  };
-};
+// Quotes are rendered as this escaped mess
+const escapedQuote = Re.eachMatch(/\&\#39;/g);
+
 
 /*
- * Plugin rewrites
+ * Plugin rewrites for my personal notes
  *
  */
 export function rules(): Rewrite[] {
@@ -33,17 +45,22 @@ export function rules(): Rewrite[] {
     {
       name: "multiple-newlines-to-double",
       description: "collapse multiple newlines to a single newline",
-      rewrite: multiNewlines.modify.bind(null, addSuffix("\n\n")),
+      rewrite: multiNewlines.modify(addSuffix("\n\n")),
     },
     {
       name: "unspaced-title-to-double",
       description: "Ensure there is a space after each H1 title",
-      rewrite: unspacedTitle.modify.bind(null, addSuffix("\n")),
+      rewrite: unspacedTitle.modify(addSuffix("\n")),
     },
     {
       name: "unspaced-quote-to-double",
       description: "Ensure there is a quote after each quote title",
-      rewrite: unspacedQuote.modify.bind(null, addSuffix("\n")),
+      rewrite: unspacedQuote.modify(addSuffix("\n")),
     },
+    {
+      name: "escaped-quote-to-unescaped",
+      description: "unescape a quote to backslash quoted",
+      rewrite: escapedQuote.modify(Const("\'"))
+    }
   ];
 }

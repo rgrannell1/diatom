@@ -9,8 +9,10 @@ export abstract class Lens<Whole, Part> {
   /*
    * Apply a function to a part of the data
    */
-  modify(whole: Whole, fn: (part: Part) => Part): Whole {
-    return this.set(fn(this.view(whole)), whole);
+  modify(fn: (part: Part) => Part) {
+    return (whole: Whole) => {
+      return this.set(fn(this.view(whole)), whole);
+    }
   }
 
   /*

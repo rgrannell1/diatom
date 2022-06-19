@@ -1,6 +1,7 @@
 import { Note } from "./note.ts";
 import { Diff } from "./diff.ts";
 import { Rewrite } from "./types.ts";
+import { delay } from "https://deno.land/std@0.144.0/async/mod.ts";
 
 function applyRewrites(rules: () => Rewrite[], content: string) {
   return rules().reduce((modified, rule) => {
@@ -25,8 +26,11 @@ export const promptRewrite = async (
     await Diff.diff(text, updated);
 
     const answer = prompt("Happy to continue? [y, yes]")?.toLowerCase();
-    if (answer !== "y" && answer !== "yes") {
-      console.log("exiting");
+
+    if (answer !== "y" && answer !== "yes" && typeof answer !== 'undefined') {
+      console.log('Skipping');
+      await delay(750)
+
       return;
     }
   }
