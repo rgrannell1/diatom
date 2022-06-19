@@ -9,6 +9,10 @@ choice). It:
 - Supports automated rewrites, with manual diff approval or fully automatic
   rewrites
 
+## Name
+
+Diatoms are vastly complicated organisms that display beautiful silica cell-walls. The mix of freeform organic growth and pleasing regularity seems appropriate to well-guided note-taking.
+
 ## Build
 
 ```bash
