@@ -11,7 +11,7 @@ choice). It:
 
 ## Name
 
-Diatoms are vastly complicated organisms that display beautiful silica cell-walls. The mix of freeform organic growth and pleasing regularity seems appropriate to well-guided note-taking.
+Diatoms are organisms with beautiful geometric silica cell-walls. Their mix of freeform organic growth and pleasing regularity seems appropriate to well-guided note-taking.
 
 ## Build
 
