@@ -27,9 +27,9 @@ export const promptRewrite = async (
 
     const answer = prompt("Happy to continue? [y, yes]")?.toLowerCase();
 
-    if (answer !== "y" && answer !== "yes" && typeof answer !== 'undefined') {
-      console.log('Skipping');
-      await delay(750)
+    if (answer !== "y" && answer !== "yes" && typeof answer !== "undefined") {
+      console.log("Skipping");
+      await delay(750);
 
       return;
     }

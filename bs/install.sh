@@ -3,6 +3,7 @@
 source "bs/bundle.sh"
 
 sudo cp dist/diatom /usr/bin/diatom
+sudo cp dist/diatom /usr/bin/di
 sudo cp minima /usr/bin/minima
 
 echo '🔶 diatom installed.'

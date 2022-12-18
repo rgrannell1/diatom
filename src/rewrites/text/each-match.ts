@@ -36,7 +36,7 @@ export function eachMatch(pattern: RegExp) {
         parts.push(whole.slice(start, whole.length));
 
         return parts.join("");
-      }
+      };
     }
   }();
 }

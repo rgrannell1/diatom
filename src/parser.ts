@@ -449,6 +449,7 @@ export class NoteParser {
         await this.frontmatter(),
       )
     ) {
+      thing["described-in"] = this.note.fpath;
       yield thing;
     }
 

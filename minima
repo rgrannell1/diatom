@@ -1,7 +1,9 @@
 #! /usr/bin/env sh
 
+REQUIREMENTS=(fzf pcregrep batcat sed)
+
 # -- check commands are present
-for cmd in fzf pcregrep; do
+for cmd in "${REQUIREMENTS[@]}"; do
   if ! hash "$cmd" 2> /dev/null
   then
     echo "$cmd could not be found on PATH"
@@ -9,7 +11,7 @@ for cmd in fzf pcregrep; do
   fi
 done
 
-
+# -- this should use a parser
 VAULT=$(pcregrep -o1 'vault:\s*"(.+)"' ~/.config/diatom.yaml)
 
 

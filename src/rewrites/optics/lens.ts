@@ -12,7 +12,7 @@ export abstract class Lens<Whole, Part> {
   modify(fn: (part: Part) => Part) {
     return (whole: Whole) => {
       return this.set(fn(this.view(whole)), whole);
-    }
+    };
   }
 
   /*

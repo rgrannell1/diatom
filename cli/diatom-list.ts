@@ -95,9 +95,9 @@ Commands:
 
 Options:
   -o,--open     Open the file using the editor determined by $VISUAL
-  --random   Select a random file
-  --count    Count the number of matches
-  --name     Just show the file name, not the full path
+  --random      Select a random file
+  --count       Count the number of matches
+  --name        Just show the file name, not the full path
 `;
 
 export async function main(argv: string[]) {

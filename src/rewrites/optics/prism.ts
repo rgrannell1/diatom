@@ -22,7 +22,7 @@ export abstract class Prism<Whole, Part> {
       }
 
       return this.set(fn(part), whole);
-    }
+    };
   }
 
   /*

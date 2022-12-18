@@ -76,8 +76,8 @@ export class Vault {
           }
         }
 
-        if (thing.includes) {
-          for (const child of thing.includes) {
+        if ((thing as any).includes) {
+          for (const child of (thing as any).includes) {
             this.subsumptions.add(child, thing.id);
           }
         }
