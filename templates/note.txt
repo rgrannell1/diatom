@@ -1,6 +1,6 @@
 ---
 - id: $filepath
-  created-on: "{{ date }}"
+  created_at: "{{ date }}"
   describes:
   - {{ name }}
 

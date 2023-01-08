@@ -9,7 +9,7 @@ type Lexeme = Token & { typeLabel: string };
 
 type ParserState = {
   typeLabel: string;
-  wordCount: number;
+  word_count: number;
   cursor: any;
   parent: any;
   tokens: any[];
@@ -61,13 +61,13 @@ export class NoteParser {
     }
 
     if (lexeme.typeLabel === "heading") {
-      state.wordCount += lexeme.text?.split(" ").length ?? 0;
+      state.word_count += lexeme.text?.split(" ").length ?? 0;
       state.cursor.tokens.push(readHeading(state, lexeme));
       return;
     }
 
     if (lexeme.typeLabel === "text") {
-      state.wordCount += lexeme.text?.split(" ").length ?? 0;
+      state.word_count += lexeme.text?.split(" ").length ?? 0;
       state.cursor.tokens.push(lexeme);
 
       return;
@@ -187,7 +187,7 @@ export class NoteParser {
 
   *markdownBodyThings(tokens: Token[]) {
     const state: Partial<ParserState> = {
-      wordCount: 0,
+      word_count: 0,
       typeLabel: "document",
       tokens: [],
       counts: {
@@ -226,7 +226,7 @@ export class NoteParser {
         yield {
           id: documentId,
           is: "Diatom/Document",
-          wordCount: [[`${cursor.wordCount}`, "Word Count"]],
+          word_count: [[`${cursor.word_count}`, "Word Count"]],
         };
 
         for (const token of cursor.tokens) {
