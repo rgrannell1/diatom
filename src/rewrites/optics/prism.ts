@@ -3,14 +3,12 @@
  *
  * - View a part of some data (returning undefined if it doesn't exist)
  * - Override a part of some data with some value, if it exists
- *
  */
 export abstract class Prism<Whole, Part> {
   abstract view(whole: Whole): Part | undefined;
   abstract set(part: Part, whole: Whole): Whole;
 
   /*
-   *
    * Apply a function to a part of the data, if that data is defined
    */
   modify(fn: (part: Part) => Part) {
@@ -26,7 +24,6 @@ export abstract class Prism<Whole, Part> {
   }
 
   /*
-   *
    * Compose two prisms; get and set subparts of a dateset
    */
   compose<SubPart>(prism1: Prism<Part, SubPart>) {

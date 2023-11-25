@@ -6,7 +6,6 @@ type WikilinkData = {
 
 /*
  * Wikilink representation (string, object)
- *
  */
 export class Wikilink {
   static from(text: string): WikilinkData {

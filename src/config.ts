@@ -1,9 +1,10 @@
-import * as Constants from "./constants.ts";
 import { parse as yamlParse } from "https://deno.land/std@0.82.0/encoding/yaml.ts";
+import { exists } from "https://deno.land/std/fs/mod.ts";
+import * as Constants from "./constants.ts";
+import { bold, cyan, gray } from "https://deno.land/std/fmt/colors.ts";
 
 /*
  * Editor configuration
- *
  */
 export type Editor = {
   name: string;
@@ -15,7 +16,6 @@ export type Editor = {
 
 /*
  * The config file follows this format
- *
  */
 export type Config = {
   vault: string;
@@ -30,10 +30,19 @@ export type Config = {
  * @return {*}  {Promise<Config>}
  */
 export async function read(): Promise<Config> {
+  const configExists = await exists(Constants.CONFIG_PATH);
+
+  if (!configExists) {
+    const message = `${cyan("diatom")}: ${gray('config file ' + Constants.CONFIG_PATH + ' missing.')}`;
+    console.error(message);
+    Deno.exit(1);
+  }
+
   return yamlParse(
     await Deno.readTextFile(Constants.CONFIG_PATH),
   ) as Config;
 }
+
 
 /* Get the configured editor, or fallback to default otherwise.
  *

@@ -1,25 +1,25 @@
-#! /usr/bin/env sh
+#! /usr/bin/env zsh
 
-REQUIREMENTS=(fzf pcregrep batcat sed)
+REQUIREMENTS=(fzf pcregrep batcat sed gecko)
 
 # -- check commands are present
 for cmd in "${REQUIREMENTS[@]}"; do
   if ! hash "$cmd" 2> /dev/null
   then
-    echo "$cmd could not be found on PATH"
+    echo "minima: $cmd could not be found on PATH" >&2
     exit 1
   fi
 done
 
-# -- this should use a parser
+# -- this should use a parser, rather than this ugly hack
 VAULT=$(pcregrep -o1 'vault:\s*"(.+)"' ~/.config/diatom.yaml)
 
 
 if [ "$OSTYPE" = 'linux' ]
 then
-  query_selection_pair="$(ls --quoting-style=literal "$VAULT" | fzf --tac --print-query --exact --preview="batcat --color always --language markdown $VAULT/{}")"
+  query_selection_pair="$(ls -p --quoting-style=literal "$VAULT" | grep -v '/' | fzf --tac --print-query --exact --preview="batcat --color always --language markdown $VAULT/{}")"
 else
-  query_selection_pair="$(ls "$VAULT" | fzf --tac --print-query --exact --preview="batcat --color always --language markdown $VAULT/{}")"
+  query_selection_pair="$(ls -p "$VAULT" | grep -v '/' | fzf --tac --print-query --exact --preview="batcat --color always --language markdown $VAULT/{}")"
 fi
 
 
@@ -29,7 +29,7 @@ selection=$(echo "$query_selection_pair" | sed -n '2 p')
 
 if [ -z "$query" ] && [ -z "$selection" ]
 then
-  echo 'no input or selection provided'
+  echo 'minima: no input or selection provided' >&2
   exit 1
 elif [ -z "$selection" ];
 then

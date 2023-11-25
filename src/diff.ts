@@ -1,6 +1,5 @@
 /*
  * Display a file diff side-by-side, with colour
-*
  */
 export class Diff {
   static async isInstalled() {

@@ -1,6 +1,5 @@
 /*
  * Focus one subpart of a dataset
- *
  */
 export abstract class Lens<Whole, Part> {
   abstract view(whole: Whole): Part;

@@ -58,7 +58,6 @@ const ruleDefinitions: Rewrite[] = [
 
 /*
  * Plugin rewrites for my personal notes
- *
  */
 export function rules(): Rewrite[] {
   return ruleDefinitions.filter((rule) => {
